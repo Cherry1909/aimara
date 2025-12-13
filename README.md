@@ -8,7 +8,7 @@ Sistema comunitario para preservar la cultura aymara mediante la recolección de
 
 - Permite grabar o subir audios de relatos
 - Georreferencia cada historia en un mapa
-- Procesa automáticamente los audios con IA (Grok) para transcripción y análisis cultural
+- Procesa automáticamente los audios con IA (Groq) para transcripción y análisis cultural
 - Genera páginas públicas para cada relato con audio, texto, mapa y perfil del narrador
 - Crea códigos QR imprimibles para compartir físicamente
 
@@ -26,7 +26,7 @@ Sistema comunitario para preservar la cultura aymara mediante la recolección de
 ### Backend
 - FastAPI (Python)
 - Firebase Admin SDK
-- Grok API para transcripción y análisis
+- Groq API para transcripción y análisis
 - qrcode para generación de códigos QR
 
 ### Infraestructura
@@ -67,7 +67,7 @@ start.bat         # Windows
 ### Con Docker (Opción Recomendada)
 - Docker Desktop instalado
 - Cuenta de Firebase
-- API Key de Grok (x.ai)
+- API Key de Groq
 
 ### Sin Docker (Instalación Manual)
 
@@ -78,7 +78,7 @@ start.bat         # Windows
 #### Backend
 - Python 3.11+
 - Cuenta de Firebase (misma del frontend)
-- API Key de Grok (x.ai)
+- API Key de Groq
 
 ## Instalación Manual (Sin Docker)
 
@@ -128,7 +128,7 @@ cp .env.example .env
 
 Editar `.env` con tus credenciales:
 ```
-GROK_API_KEY=xai-tu-api-key
+GROQ_API_KEY=your-groq-api-key
 FIREBASE_CREDENTIALS_PATH=./serviceAccount.json
 FIREBASE_STORAGE_BUCKET=tu-proyecto.appspot.com
 BASE_URL=http://localhost:5173
@@ -173,7 +173,7 @@ API disponible en http://localhost:8000
 3. **Datos**: Completa formulario con datos del narrador
 4. **Procesamiento**:
    - Audio se sube a Firebase Storage
-   - Backend procesa con Grok API (transcripción + análisis)
+   - Backend procesa con Groq API (transcripción + análisis)
    - Se extraen palabras clave culturales y categoría
 5. **Publicación**:
    - Se genera página pública con audio, texto, mapa
@@ -232,7 +232,7 @@ Colección `stories`:
 - `GET /api/v1/stories/nearby` - Relatos cercanos
 
 ### Audio Processing
-- `POST /api/v1/audio/process` - Procesar audio con Grok
+- `POST /api/v1/audio/process` - Procesar audio con Groq
 - `GET /api/v1/audio/status/{job_id}` - Estado del procesamiento
 
 ### QR Codes
@@ -306,7 +306,7 @@ Proyecto Historias Vivientes Aymara
 ## Agradecimientos
 
 - Comunidades aymaras de Bolivia
-- x.ai (Grok API)
+- Groq API
 - Firebase
 - Contribuidores del proyecto
 

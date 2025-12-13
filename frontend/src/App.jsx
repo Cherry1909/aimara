@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/layout/Navbar'
 import Home from './pages/Home'
 import UploadStory from './pages/UploadStory'
 import StoryPage from './pages/StoryPage'
@@ -7,7 +8,8 @@ import ChatPage from './pages/ChatPage'
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/upload" element={<UploadStory />} />

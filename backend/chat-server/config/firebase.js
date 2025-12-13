@@ -18,7 +18,10 @@ export function initializeFirebase() {
 
   try {
     // Load service account credentials
-    const credentialsPath = join(__dirname, process.env.FIREBASE_CREDENTIALS_PATH);
+    // Use absolute path or relative path from project root
+    const credentialsPath = process.env.FIREBASE_CREDENTIALS_PATH.startsWith('/') || process.env.FIREBASE_CREDENTIALS_PATH.match(/^[a-zA-Z]:/)
+      ? process.env.FIREBASE_CREDENTIALS_PATH
+      : join(__dirname, '..', '..', process.env.FIREBASE_CREDENTIALS_PATH);
     const serviceAccount = JSON.parse(readFileSync(credentialsPath, 'utf8'));
 
     // Initialize Firebase Admin

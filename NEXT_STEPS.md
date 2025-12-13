@@ -7,9 +7,9 @@ Se ha completado la configuración base del proyecto:
 ### Backend (FastAPI) - COMPLETADO
 - ✅ Estructura de directorios
 - ✅ Configuración FastAPI con CORS
-- ✅ Schemas Pydantic (Story, Narrator, Location, Grok)
+- ✅ Schemas Pydantic (Story, Narrator, Location, Groq)
 - ✅ Servicio Firebase (Firestore + Storage)
-- ✅ Servicio Grok (transcripción + análisis)
+- ✅ Servicio Groq (transcripción + análisis)
 - ✅ Servicio QR Generator
 - ✅ Endpoints API completos:
   - `/api/v1/stories/` - CRUD completo
@@ -30,9 +30,9 @@ Se ha completado la configuración base del proyecto:
 1. `backend/app/main.py` - Entry point FastAPI
 2. `backend/app/core/config.py` - Configuración
 3. `backend/app/schemas/story.py` - Schemas Pydantic
-4. `backend/app/schemas/grok.py` - Schemas Grok
+4. `backend/app/schemas/groq.py` - Schemas Groq
 5. `backend/app/services/firebase_service.py` - Firebase Admin
-6. `backend/app/services/grok_service.py` - Integración Grok
+6. `backend/app/services/groq_service.py` - Integración Groq
 7. `backend/app/services/qr_generator.py` - QR codes
 8. `backend/app/api/v1/endpoints/stories.py` - API Stories
 9. `backend/app/api/v1/endpoints/audio.py` - API Audio
@@ -162,9 +162,9 @@ frontend/src/pages/StoryPage.jsx
    - Frontend: Copiar config a `.env.local`
    - Backend: Descargar `serviceAccount.json`
 
-### Obtener API Key de Grok
+### Obtener API Key de Groq
 
-1. Ir a https://x.ai/
+1. Ir a https://console.groq.com/
 2. Crear cuenta / login
 3. Obtener API key
 4. Agregar a `backend/.env`
@@ -257,7 +257,7 @@ Abrir: http://localhost:5173
 - **Leaflet.js**: https://leafletjs.com/
 - **React Leaflet**: https://react-leaflet.js.org/
 - **MediaRecorder API**: https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
-- **Grok API**: https://docs.x.ai/
+- **Groq API**: https://console.groq.com/docs
 - **FastAPI Docs**: https://fastapi.tiangolo.com/
 - **Vite PWA Plugin**: https://vite-pwa-org.netlify.app/
 
@@ -265,7 +265,7 @@ Abrir: http://localhost:5173
 
 ⚠️ **Antes de comenzar el desarrollo:**
 1. Configurar Firebase y obtener credenciales
-2. Obtener API key de Grok
+2. Obtener API key de Groq
 3. Instalar todas las dependencias
 4. Probar que backend y frontend se conectan
 

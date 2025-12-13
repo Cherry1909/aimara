@@ -18,7 +18,7 @@ async def process_audio_background(job_id: str, story_id: str, audio_url: str, l
     """
     Procesar audio en background
 
-    1. Transcribir con Grok
+    1. Transcribir con Groq
     2. Analizar contenido
     3. Actualizar Firestore
     4. Generar QR

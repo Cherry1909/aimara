@@ -102,7 +102,7 @@ function UploadStory() {
       const createResult = await createStory(storyData)
       setStoryId(createResult.id)
 
-      // Paso 3: Iniciar procesamiento de audio con Grok
+      // Paso 3: Iniciar procesamiento de audio con Groq
       setUploadProgress(70)
       const processResult = await processAudio(createResult.id, uploadResult.url)
       setProcessingJobId(processResult.job_id)
