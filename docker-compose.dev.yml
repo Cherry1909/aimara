@@ -1,0 +1,57 @@
+# Docker Compose para Desarrollo con Hot Reload
+version: '3.8'
+
+services:
+  # Backend FastAPI con hot reload
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: historias-aymara-backend-dev
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - GROK_API_KEY=${GROK_API_KEY}
+      - FIREBASE_CREDENTIALS_PATH=/app/credentials/serviceAccount.json
+      - FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET}
+      - BASE_URL=${BASE_URL:-http://localhost:3000}
+      - ENVIRONMENT=development
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Hot reload: montar código fuente
+      - ./backend/app:/app/app
+      - ./backend/credentials:/app/credentials:ro
+    networks:
+      - historias-network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend Vite con hot reload
+  frontend-dev:
+    image: node:18-alpine
+    container_name: historias-aymara-frontend-dev
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - "5173:5173"  # Puerto dev de Vite
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1
+      - VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY}
+      - VITE_FIREBASE_AUTH_DOMAIN=${VITE_FIREBASE_AUTH_DOMAIN}
+      - VITE_FIREBASE_PROJECT_ID=${VITE_FIREBASE_PROJECT_ID}
+      - VITE_FIREBASE_STORAGE_BUCKET=${VITE_FIREBASE_STORAGE_BUCKET}
+      - VITE_FIREBASE_MESSAGING_SENDER_ID=${VITE_FIREBASE_MESSAGING_SENDER_ID}
+      - VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID}
+    volumes:
+      # Hot reload: montar código fuente
+      - ./frontend:/app
+      - /app/node_modules  # Volumen anónimo para node_modules
+    networks:
+      - historias-network
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+
+networks:
+  historias-network:
+    driver: bridge

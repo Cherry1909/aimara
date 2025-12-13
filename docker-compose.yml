@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: historias-aymara-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Groq API
+      - GROQ_API_KEY=${GROQ_API_KEY}
+
+      # Firebase
+      - FIREBASE_CREDENTIALS_PATH=/app/credentials/serviceAccount.json
+      - FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET}
+
+      # URLs
+      - BASE_URL=${BASE_URL:-http://localhost:3000}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+
+      # CORS - permitir frontend
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:80,http://frontend:80
+    volumes:
+      # Montar credenciales de Firebase
+      - ./backend/credentials:/app/credentials:ro
+      # Para desarrollo: montar código fuente (comentar en producción)
+      - ./backend/app:/app/app
+      # Almacenamiento persistente para audios y QR
+      - ./backend/storage:/app/storage
+    networks:
+      - historias-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Frontend React + Vite + Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Variables de entorno para build
+        - VITE_API_URL=http://localhost:8000/api/v1
+        - VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY}
+        - VITE_FIREBASE_AUTH_DOMAIN=${VITE_FIREBASE_AUTH_DOMAIN}
+        - VITE_FIREBASE_PROJECT_ID=${VITE_FIREBASE_PROJECT_ID}
+        - VITE_FIREBASE_STORAGE_BUCKET=${VITE_FIREBASE_STORAGE_BUCKET}
+        - VITE_FIREBASE_MESSAGING_SENDER_ID=${VITE_FIREBASE_MESSAGING_SENDER_ID}
+        - VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID}
+    container_name: historias-aymara-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - historias-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+networks:
+  historias-network:
+    driver: bridge
+
+# Volúmenes nombrados (opcional, para persistencia futura)
+volumes:
+  firebase-credentials:
+    driver: local
