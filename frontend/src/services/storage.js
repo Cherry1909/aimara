@@ -91,9 +91,19 @@ export const getFullAudioUrl = (url) => {
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'
   const BASE_URL = API_URL.replace('/api/v1', '')
 
+  // Validar que url existe y no está vacío
+  if (!url) {
+    console.error('getFullAudioUrl: audioUrl is undefined, null, or empty:', url)
+    return '' // Retornar vacío en lugar de construir URL inválida
+  }
+
+  // Si ya es URL absoluta, retornarla
   if (url.startsWith('http')) {
     return url
   }
 
-  return `${BASE_URL}${url}`
+  // Construir URL completa
+  const fullUrl = `${BASE_URL}${url}`
+  console.log('getFullAudioUrl:', url, '->', fullUrl)
+  return fullUrl
 }
